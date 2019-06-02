@@ -1,14 +1,8 @@
 <template>
     <div>
-        <form @submit.prevent="addcard" class="mb-3">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Name" v-model="card.name">
-            </div>
-            <div class="form-group">
-                <textarea type="text" class="form-control" placeholder="Opinion" v-model="card.op"></textarea>
-            </div>
-            <button type="submit" class="btn btn-success btn-block">Save</button>
-        </form>
+
+        <AddCardForm v-on:added-card="fetchCards"></AddCardForm>
+
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]"><a @click="fetchCards(pagination.prev_page_url)" class="page-link" href="#">Previous</a></li>
@@ -19,7 +13,7 @@
         <div class="">
             <div v-bind:key="card.name" v-for="card in cards" class="card mb-3 w-100">
                 <CardItem  v-bind:card="card"/>
-                <button @click="editCard(card)" class="btn btn-warning my-2">Edit</button>
+                <!-- <button @click="editCard(card)" class="btn btn-warning my-2">Edit</button> -->
                 <button @click="deleteCard(card.id)" class="btn btn-danger my-2">Delete</button>
             </div>
         </div>
@@ -28,11 +22,13 @@
 
 <script>
 import CardItem from './CardItem';
+import AddCardForm from './AddCardForm';
 
 export default {
     name: "Cards",
     components: {
-        CardItem
+        CardItem,
+        AddCardForm
     },
     data() {
         return {
@@ -71,8 +67,7 @@ export default {
                 })
                 .then(res => res.json())
                 .then(data => {
-                    alert('Card Removed');
-                    this.fetchcards();
+                    this.fetchCards();
                 })
                 .catch(err => console.log(err));
             }
