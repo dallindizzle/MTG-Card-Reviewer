@@ -31,3 +31,5 @@ Route::put('card', 'CardsController@store');
 
 // Delete card
 Route::delete('card/{id}', 'CardsController@destroy');
+
+Route::get('sets', 'SetsController@index');
